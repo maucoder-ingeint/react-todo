@@ -1,7 +1,7 @@
 // JS Packages
 import React from "react";
 // Styles
-// import './App.css';
+import './App.css';
 // Local
 import { TodoCounter } from "./TodoCounter";
 import { TodoSearch } from "./TodoSearch";
