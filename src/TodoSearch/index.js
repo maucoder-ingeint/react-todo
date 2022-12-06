@@ -3,7 +3,6 @@ import "./todoSearch.css";
 
 function TodoSearch({ searchValue, setValueSearch }) {
     const onChangeInput = (event) => {
-        console.log(event.target.value)
         setValueSearch(event.target.value)
     }
 
