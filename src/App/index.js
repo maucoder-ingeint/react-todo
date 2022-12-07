@@ -10,25 +10,59 @@ import { AppUI } from "./AppUI"
 //   {text: 'Eat onion', completed: true}
 // ];
 
+function useLocalStorage(itemName, initialValue) {
+  const [error, setError] = React.useState(false)
+  const [loading, setLoading] = React.useState(true);
+  const [item, setItem] = React.useState(initialValue);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      try {
+        let localStorageItem = localStorage.getItem(itemName);
+        let parsedItem;
+      
+        if (!localStorageItem) {
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = [];
+        } else {
+          parsedItem = JSON.parse(localStorageItem);
+        }
+
+        setItem(parsedItem);
+        setLoading(false);
+      } catch(error) {
+        setError(error)
+      }
+    }, 3000);
+  });
+
+  const saveItem = (newItems) => {
+    try {
+      const stringifiedItems = JSON.stringify(newItems);
+      localStorage.setItem(itemName, stringifiedItems);
+
+      setItem(newItems);
+    } catch(error) {
+      setError(error)
+    }
+  }
+
+  return {
+    item,
+    saveItem,
+    loading,
+    error
+  };
+}
+
 function App() {
-  let localStorageTodos = localStorage.getItem('TODOS_V1');
-  let parsedTodos;
+  const {
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+    error
+  } = useLocalStorage('TODOS_V1', []);
 
-  if (localStorageTodos) {
-    parsedTodos = JSON.parse(localStorageTodos);
-  } else {
-    localStorage.setItem('TODOS_V1', JSON.stringify([]));
-    parsedTodos = [];  
-  }
-
-  const saveTodos = (newTodos) => {
-    const stringifiedTodos = JSON.stringify(newTodos);
-    localStorage.setItem('TODOS_V1', stringifiedTodos);
-
-    setTodos(newTodos)
-  }
-
-  const [todos, setTodos] = React.useState(parsedTodos);
   const [searchValue, setValueSearch] = React.useState('');
 
   const completedTodos = todos.filter(todo => !!todo.completed).length;
@@ -45,7 +79,7 @@ function App() {
       const searchText = searchValue.toLowerCase();
 
       return todoText.includes(searchText);
-    })
+    });
   }
 
   const completeTodo = (text, new_state) => {
@@ -63,8 +97,15 @@ function App() {
     saveTodos(newTodos);
   };
 
+  // Se puede definir una condición gracias a un segundo parametro
+  // React.useEffect(() => {
+  //   console.log('Use Effect :D')
+  // }, [totalTodos])
+
   return (
-    <AppUI 
+    <AppUI
+      error={error}
+      loading={loading}
       totalTodos={totalTodos}
       completedTodos={completedTodos}
       searchValue={searchValue}
