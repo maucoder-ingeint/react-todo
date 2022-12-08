@@ -3,7 +3,14 @@ import "./createTodoButton.css"
 
 function CreateTodoButton(props){
     const onClickButtom = () => {
-        props.setOpenModal(!!props.openModal ? false: true);
+        // setState native function to optimizate code
+        props.setFormRequestValue((prevState) => {
+            if (prevState !== 'CREATE') {
+                return "CREATE"
+            }
+            return prevState
+        });
+        props.setOpenModal(prevState => !prevState);
     };
 
     return (

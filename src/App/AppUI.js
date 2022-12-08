@@ -11,6 +11,12 @@ import { TodoList } from "../TodoList";
 import { CreateTodoButton } from "../CreateTodoButton";
 import { TodoItem } from "../TodoItem/index";
 import { Modal } from '../modal/index'
+import { TodoForm } from "../TodoForm";
+
+// Loading Files
+import { TodosError } from '../TodosError/index.js'
+import { TodosLoading } from '../TodosLoading/index'
+import { EmptyTodos } from '../EmptyTodos/index'
 
 function AppUI() {
   const {
@@ -20,45 +26,63 @@ function AppUI() {
     completeTodo, 
     deleteTodo,
     openModal,
-    setOpenModal
+    setOpenModal,
+    editTodo,
+    formRequestValue,
+    setFormRequestValue,
+    setidValue
   } = React.useContext(todoContext);
 
   return (
       <React.Fragment>
-        <TodoCounter />
+        <main className="todoMain">
+          <TodoCounter />
+            
+          <TodoSearch />
+          <TodoList>
+            { error && <TodosError/>}
+            { loading && new Array(3).fill(1).map((a, i) =>
+              <TodosLoading key={i}/>
+            )}
+            { (!loading && !searchedTodos.length) && <EmptyTodos />}
+
+            {searchedTodos.map(todo => (
+              <TodoItem
+                key={todo.text}
+                text={todo.text}
+                completed={todo.completed}
+                onComplete={() => {
+                  completeTodo(todo.text, todo.completed ? false: true)
+                }}
+                onDelete={() => {
+                  deleteTodo(todo.text)
+                }}
+                onEdit={() => {
+                  editTodo(todo.text)
+                }}
+                setOpenModal={setOpenModal}
+                formRequestValue={formRequestValue}
+                setFormRequestValue={setFormRequestValue}
+                setidValue={setidValue}
+                />
+            ))}
+          </TodoList>
           
-        <TodoSearch />
-        <TodoList>
-          { error && <p>Have Dispair, there is an error!!!</p>}
-          { loading && <p>We're charging Your changes, please Don't worry...</p>}
-          { (!loading && !searchedTodos.length) && <p>Create your first ToDo</p> }
-
-          {searchedTodos.map(todo => (
-            <TodoItem
-              key={todo.text}
-              text={todo.text}
-              completed={todo.completed}
-              onComplete={() => {
-                completeTodo(todo.text, todo.completed ? false: true)
-              }}
-              onDelete={() => {
-                deleteTodo(todo.text)
-              }}
+          {!!openModal && (
+            <Modal>
+              <TodoForm
+                
               />
-          ))}
-        </TodoList>
-        
-        {!!openModal && (
-          <Modal>
-            <p>{searchedTodos.length > 0 && searchedTodos[0].text}</p>
-          </Modal>
-        )}
+            </Modal>
+          )}
 
-        <CreateTodoButton
-          setOpenModal={setOpenModal}
-          openModal={openModal}
-        />
-  
+          <CreateTodoButton
+            setFormRequestValue={setFormRequestValue}
+            setOpenModal={setOpenModal}
+            formRequestValue={formRequestValue}
+            openModal={openModal}
+          />
+        </main>
       </React.Fragment>
   );
 }

@@ -7,7 +7,7 @@ function TodoCounter(){
 
     let message = `You has ${completeTodos} of ${totalTodos} TODOs`
     if (completeTodos === totalTodos && totalTodos !== 0) {
-        message = 'Great! You completedTodos all your To-Dos'
+        message = 'Great! You completed all your To-Do'
     }
 
     return (
