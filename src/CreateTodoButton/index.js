@@ -1,15 +1,15 @@
 import React from "react";
 import "./createTodoButton.css"
 
-function CreateTodoButton(){
-    const onClickCreateToDo = (msg) => {
-        alert(msg);
+function CreateTodoButton(props){
+    const onClickButtom = () => {
+        props.setOpenModal(!!props.openModal ? false: true);
     };
 
     return (
         <button 
             className="CreateTodoButton"
-            onClick={() => onClickCreateToDo("Hey! Don't press the button, It's not ready yet!")}
+            onClick={onClickButtom}
         >
             +
         </button>

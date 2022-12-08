@@ -1,10 +1,13 @@
 import React from "react";
+import { todoContext } from "../todoContext";
 import './TodoCounter.css'
 
-function TodoCounter({ total, completed }){
-    let message = `You has completed ${completed} of ${total} TODOs`
-    if (completed == total && total != 0) {
-        message = 'Great! You completed all your To-Dos'
+function TodoCounter(){
+    const { totalTodos, completeTodos } = React.useContext(todoContext);
+
+    let message = `You has ${completeTodos} of ${totalTodos} TODOs`
+    if (completeTodos === totalTodos && totalTodos !== 0) {
+        message = 'Great! You completedTodos all your To-Dos'
     }
 
     return (
