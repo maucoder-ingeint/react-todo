@@ -3,6 +3,7 @@
     max-width: 400px;
     background-color: #fff;
     display: flex;
+    border-radius: 20px;
     align-content: center;
     flex-direction: column;
     padding: 33px 40px;
@@ -16,8 +17,8 @@
 }
 
 .todoInput{
-    background-color: #F9FBFC;
-    border: 2px, solid #094067;
+    background-color: #edf0f1;
+    border: 2px;
     border-color: #094067;
     border-radius: 10px;
     color: #094067;

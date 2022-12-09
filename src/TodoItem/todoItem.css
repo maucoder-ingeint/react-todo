@@ -11,7 +11,7 @@
 }
 
 .TodoItem-p {
-    margin: 24px 0 24px 24px;
+    margin: 24px 0 24px 25px;
     width: calc(100% - 120px);
     font-size: 18px;
     line-height: 24px;
@@ -36,7 +36,7 @@
 .Icon-check {
     color: #094067;
     position: absolute;
-    left: 12px;
+    left: -3px;
 }
 
 .Icon-check--active {
